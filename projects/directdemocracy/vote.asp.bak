@@ -1,0 +1,36 @@
+<!-- #include virtual="/security.asp"-->
+<!-- #include virtual="/connection.asp"-->
+<!--#include virtual="/functions.asp" -->
+<%
+'Votes are always on comments
+bUp=0
+bDown=0
+if request("v")="1" then
+	bUp=1
+	bDown=0
+else
+	bUp=0
+	bDown=1
+end if
+'count to check if this person has already voted
+sSQL="Call adds.P_Sel_Vote_count ("&request("c")&","&session("id_people")&","&bUp&","&bDown&")"
+openRS(sSQL)
+votes=rsTemp(0)
+if votes="0" then
+	sSQL="Call adds.P_Ins_Vote ("&request("c")&","&session("id_people")&","&bUp&","&bDown&")"
+	'rw(sSQL)
+	openRS(sSQL)
+	sMsg="Vote has been inserted."
+else
+	sMsg="Duplicate Votes are not allowed."
+end if
+closeRS()
+
+%>
+
+
+
+
+
+
+

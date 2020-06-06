@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-control" content="Public">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link rel="stylesheet" href="/files/css/main-bs431.css" />
+<link rel="stylesheet" href="/files/css/gh-buttons.css" />
+
+ <!--file uploader-->
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
+  <link rel="stylesheet" href="/files/plupload-2.1.7/js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+   <script type="text/javascript" src="/files/jquery.bpopup.min.js"></script>
+    <script type="text/javascript" src="/files/plupload-2.1.7/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="/files/plupload-2.1.7/js/jquery.ui.plupload/jquery.ui.plupload.js"></script>
+   <script type="text/javascript" src="/files/plupload-2.1.7/js/upload.js"></script>
+   <!--RTE rich text editor-->
+  <!-- Make sure the path to CKEditor is correct. -->
+  <script src="/files/ckeditor/ckeditor.js"></script>
+  <script type="text/javascript">
+
+  function updatePhoto() {
+  //UPDATE PHOTO so load a popup with image uploader in it.
+  $('#popup').bPopup();
+}
+  //$(".editor").jqte({change: function(){ alert("The editor is changed"); }});
+  function Save_Form()
+  {//alert("Saving "+uid);
+  //go through form and update items, build string to save
+  sURL="/admin/ajax/save.php"
+  //s="?t=food&uid="+$("#uid").val()+"&name="+$("#intro").val()+"&email="+$("#email").val()+"&password="+$("#password").val()+"&about_me="+$("#about_me").val()
+  //sURL=sURL+s;
+  //alert(sURL);
+  //var myValue = $("#intro").getValue();
+  //alert (myValue);
+  for ( instance in CKEDITOR.instances )
+    CKEDITOR.instances[instance].updateElement();
+  var serializedForm = $("#myform").serialize();
+  //alert("serializedForm is:\n=====\n"+serializedForm +"\n=====");
+   $.post(sURL, $("#myform").serialize(),function(data, status)
+   {//update url for people pic on client side
+        $(".success").show();
+        //check output for login redirect due to timeout.
+        var n = data.indexOf("login_form");
+        //if (n==-1)
+          //{document.location.href="/login.asp"};
+        $('.success').html(data);
+        $('.success').delay(3000).fadeOut('slow');
+        
+   })
+   .fail(function() {
+      alert(data); // or whatever
+  });
+  }           
+  </script>
+
+  <script type="text/javascript">
+  function Delete_Record(t,d,l)
+  {
+  sURL="/admin/ajax/delete.php?d="+d+"&t="+t
+  //alert(sURL);
+   $.get(sURL, function(data, status){
+    alert(data);
+    //window.location.replace(l);
+    })
+  }
+  </script>
+<script type="text/javascript">
+function Add_Ingredient(iR) {
+//send food id + qty to form
+//alert($("#ingredients_list").html());
+if ($("#ingredients_list").html()=="Add from list above")
+  { 
+    $("#ingredients_list").html("")
+  }
+sURL="/admin/ajax/add_recipe_item.php?idf="+$("#food_add").val()+"&qty="+$("#food_amount").val()+"&idp=5"+"&idr="+iR
+//alert(sURL);
+ $.get(sURL, function(data, status){
+  sIngredients=$("#ingredients_list").html();
+  sIngredients=sIngredients+data;
+  $("#ingredients_list").html(sIngredients);
+    }).fail(function() {
+    alert('error please login again.'); // or whatever
+});
+}
+
+function add_contribution(iR) {
+//send food id + qty to form
+//alert($("#ingredients_list").html());
+if ($("#ingredients_list").html()=="Add from list above")
+  { 
+    $("#ingredients_list").html("")
+  }
+sURL="/admin/ajax/add_contribution_item.php?idc="+$("#portion_size").val()+"&c="+$("#contribuition_amount").val()+"&idr="+iR
+//alert(sURL);
+ $.get(sURL, function(data, status){
+  sIngredients=$("#contribution_list").html();
+  sIngredients=sIngredients+data;
+  $("#contribution_list").html(sIngredients);
+    }).fail(function() {
+    alert('error please login again.'); // or whatever
+});
+}
+
+function Delete_Ingredient(d)
+{
+sURL="/admin/ajax/add_recipe_item.php?d="+d
+//alert(sURL);
+ $.get(sURL, function(data, status){
+  $("#ingredient"+d).hide()
+  })
+
+}
+
+function Delete_Contribution(d)
+{
+sURL="/admin/ajax/add_contribution_item.php?d="+d
+//alert(sURL);
+ $.get(sURL, function(data, status){
+  alert(data);
+  $("#portion_size"+d).hide()
+  })
+
+}
+//alert (response);
+//send off ingredients to add_Recipe_item.php
+</script>
+
+
+<title>Antidote </title>
+<meta name="description" content="Software to change the world. Our goal is to educate people on the benefits, both mental and physical, both for the inner and the outer, for self and others." />
+<link rel="canonical" href="http://www.antidote.org.nz"/>
+<meta name="keywords" content="POS cafe software, veganism, plant based, nutrition"/>
+<meta property="og:image" content="http:///images/socrates_change.jpg" />
+<meta property="og:title" content="Antidote " />
+<meta property="og:site_name" content="Antidote Food System" />
+<meta property="og:description" content="Software to change the world. Our goal is to educate people on the benefits, both mental and physical, both for the inner and the outer, for self and others." />
+<meta property="og:url" content="//add_recipe.php?id=146" />
+<meta property="og:type" content="website" />
+<meta property="fb:app_id" content="1575727666027370" />
+<link rel="stylesheet" type="text/css" href="/files/css/main_style.css" title="wsite-theme-css" />
+
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script src="/files/js/main.js"></script>
+
+</head>
+
+<body>
+<div class="container-fluid" style="max-width:1280px;margin-left: auto;margin-right: auto;">
+<div class="info">Info message</div>
+<div class="success">Successful operation message</div>
+<div class="warning">Warning message</div>
+<div class="error">Error message</div>
+<div class="background">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <a class="navbar-brand" href="#">
+    <img src="/images/logo.png" style="width:200px" alt="">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav navbar-nav navbar-right">
+       <li class="nav-item">
+        <a class="nav-link" href="/index.php">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/recipes.php">Recipes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/foods.php">Foods</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/courses.php" id="navbarDropdown" role="button" data-toggle="dropdown">
+         Courses
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/courses.php">Christchurch</a>
+          <a class="dropdown-item disabled" href="#">Online</a>
+        </div>
+      </li>
+     <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/projects.php" id="navbarDropdown" role="button" data-toggle="dropdown">
+        Projects
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/projects.php" id="navbarDropdown">Projects</a>          
+          <a class="dropdown-item" href="/projects/wisdom/crowd.htm">Wisdom of the Crowd</a>
+          <a class="dropdown-item" href="/foods.php">Food Supply</a>
+          <a class="dropdown-item" href="/projects/directdemocracy/now.php">Direct Democracy Governance System.</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact.php">Contact</a>
+      </li>
+   <li class='nav-item dropdown'><a class='nav-link dropdown-toggle' href='/login.php' id='navbarDropdown' role='button' data-toggle='dropdown'><img src='/images/people/xsthumb/fc3e09f2.jpg' style='' alt=''me''></a><div class='dropdown-menu' aria-labelledby='navbarDropdown'><a class='dropdown-item' href='/me.php'>My Info</a><a class='dropdown-item' href='/admin/data/index.php'>Data Admin</a><a class='dropdown-item' href='/logout.php'>Logout</a></div></li>      <li class="nav-item">
+       <a class="nav-link" href="https://www.instagram.com/alchemyacademybali"><img style="text-align: left" src="/images/insta-icox24.png"></a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="https://www.facebook.com/alchemyacademy"><img style="text-align: left" src="/images/facebook-icox24.png"></a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+</div>
+
+			<form  id="myform" name="myform" action="/admin/ajax/save.php">
+			<input type="hidden" name="t" value="recipe">
+			<input type="hidden" name="uid" value="8e4f40ac">
+			<input type="hidden" name="file_name" id="file_name" value="8e4f40ac.jpg">
+			<input type="hidden" name="folder_name" id="folder_name" value="recipe">
+			<input type="hidden" name="idr" id="idr" value="146">
+			<div class="row row-centered">
+				<div class="col-sm-12">
+					<h3>Adding Recipe</h3>
+				</div>
+			</div>
+			
+ 			<div class="row row-centered vcenter">
+		        <div class="col-sm-3 indent10" >
+		          Give it a Name
+		        </div>
+		        <div class="col-sm-5">
+					<input type="text" size="40" maxlength="100" name="name" value="Yellow juice">        
+		        </div>
+		        <div class="col-sm-4">
+					<a class="button icon arrowright" href="/recipe.php?r=146">Preview on web</a>
+		        </div>
+		  </div>
+			
+			<div class="row row-centered">
+			       <div class="col-sm-3">
+						
+		   			 </div>
+		        <div class="col-sm-5">
+							<div class="thumb-wrapper photo_holder_recipe" style="border:1px solid;">
+							<span id="updatePhoto"  onclick="updatePhoto();">
+							<img id="update_img" class="photo_holder_recipe" style="border:0px solid;" src="/images/recipe/med/8e4f40ac.jpg" alt=" __Upload a photo" />
+							</span>
+							<pre id="log" style="height: 300px; overflow: auto;display:none;"></pre>
+							</div>          
+		        </div>
+		        
+		        <div class="col-sm-4">
+						<textarea id="brief" name="brief" cols="30" rows="6" placeholder="Add a Brief Description of the recipe here.  This text will show on Menu page."></textarea>
+		   			</div>
+		  </div>
+		  
+		  	<div class="row row-centered">
+		        <div class="col-sm-3 indent10" >
+		          Choose Ingredients
+		        </div>
+		        <div class="col-sm-9">
+					<input type="text" size="6" maxsize="5" id="food_amount" name="food_amount" value="100">
+					grams of 
+					<select id="food_add" name="food_add">
+						<option value='125'>Almond Milk Organic</option><option value='19'>Almonds</option><option value='148'>Apple Cider Vinegar</option><option value='15'>Apples Juicing Organic</option><option value='5'>Apricots</option><option value='12'>Asparagus</option><option value='6'>Avocados</option><option value='7'>Bananas - Organic / Fairtrade</option><option value='106'>Barley</option><option value='77'>Basil</option><option value='119'>Beet greens</option><option value='45'>Beets</option><option value='4'>Black beans</option><option value='68'>Black pepper</option><option value='8'>Blueberries</option><option value='120'>Bok choy</option><option value='144'>Brazil Nuts</option><option value='9'>Broccoli</option><option value='107'>Brown rice</option><option value='10'>Brussels sprouts</option><option value='157'>Buckweat Flour</option><option value='11'>Buckwheat</option><option value='61'>Bulgur Wheat</option><option value='18'>Cabbage</option><option value='17'>Cantaloupe</option><option value='46'>Capsicum </option><option value='208'>Caraway seed</option><option value='128'>Cardamon</option><option value='203'>Carob (powder)</option><option value='20'>Carrots</option><option value='86'>Cashews</option><option value='13'>Cauliflower</option><option value='14'>Celery</option><option value='166'>Chia seeds</option><option value='53'>Chickpeas</option><option value='163'>Chili Pepper (Fresh)</option><option value='28'>Chili pepper, dried</option><option value='64'>Cilantro & Coriander seeds</option><option value='62'>Cinnamon, ground</option><option value='190'>Cinnamon, whole sticks</option><option value='63'>Cloves</option><option value='145'>Cocoa</option><option value='123'>Coconut cream, raw</option><option value='139'>Coconut Juice Fresh</option><option value='140'>Coconut meat</option><option value='160'>Coconut Oil</option><option value='113'>Collard greens</option><option value='206'>Coriander/Cilantro</option><option value='81'>Corn</option><option value='155'>Corn Flower</option><option value='117'>Cranberries</option><option value='38'>Cucumbers</option><option value='82'>Cumin seeds</option><option value='159'>Curry Powder</option><option value='204'>Dandelion root</option><option value='124'>Dates</option><option value='65'>Dill</option><option value='21'>Eggplant</option><option value='202'>Feijoa</option><option value='22'>Fennel</option><option value='23'>Figs</option><option value='74'>Flaxseeds</option><option value='55'>Garlic</option><option value='66'>Ginger</option><option value='142'>Goji Berries</option><option value='24'>Grapefruit</option><option value='36'>Grapes</option><option value='111'>Green beans</option><option value='50'>Green peas</option><option value='127'>Hazelnuts</option><option value='218'>Hemp Seed</option><option value='147'>Honey</option><option value='34'>Kale</option><option value='78'>Kidney beans</option><option value='37'>Kiwifruit</option><option value='59'>Kumara</option><option value='25'>Leeks</option><option value='205'>Lemon Verbena</option><option value='210'>Lemongrass</option><option value='26'>Lemons</option><option value='47'>Lentils</option><option value='54'>Lima beans</option><option value='217'>Mango</option><option value='215'>Maple syrup</option><option value='48'>Millet</option><option value='98'>Miso</option><option value='85'>Mushrooms Button</option><option value='102'>Mushrooms, shiitake</option><option value='84'>Mustard greens</option><option value='93'>Mustard seeds</option><option value='79'>Navy beans</option><option value='164'>Nutmeg Ground</option><option value='211'>Nutritional Yeast</option><option value='49'>Oats</option><option value='109'>Olive oil, extra  virgin</option><option value='42'>Olives</option><option value='41'>Onions</option><option value='33'>Oranges</option><option value='67'>Oregano</option><option value='43'>Papaya</option><option value='88'>Parsley</option><option value='191'>Passion fruit</option><option value='89'>Peanuts</option><option value='27'>Pears</option><option value='129'>Peppercorn ground</option><option value='90'>Peppermint</option><option value='31'>Pineapple</option><option value='80'>Pinto beans</option><option value='32'>Plums & Prunes</option><option value='213'>Polenta</option><option value='156'>Potato Flour</option><option value='44'>Potatoes</option><option value='197'>Probiotics</option><option value='168'>Psyllium husks</option><option value='126'>Pumpkin</option><option value='75'>Pumpkin seeds</option><option value='115'>Quinoa</option><option value='35'>Raspberries</option><option value='151'>Rice Flour</option><option value='56'>Romaine lettuce</option><option value='69'>Rosemary</option><option value='60'>Rye</option><option value='70'>Sage</option><option value='130'>Salt Himalayan Rock</option><option value='112'>Sea vegetables</option><option value='76'>Sesame seeds</option><option value='152'>Soy Cream</option><option value='95'>Soy sauce </option><option value='73'>Soybeans</option><option value='39'>Spinach</option><option value='57'>Squash, summer</option><option value='58'>Squash, winter</option><option value='193'>Stevia</option><option value='30'>Strawberries</option><option value='122'>Sun Dried Tomatoes</option><option value='150'>Sunflower Oil</option><option value='52'>Sunflower seeds</option><option value='16'>Swiss chard</option><option value='158'>Tapicoa Flour</option><option value='105'>Tempeh</option><option value='71'>Thyme</option><option value='96'>Tofu</option><option value='40'>Tomatoes</option><option value='72'>Turmeric</option><option value='116'>Turnip greens</option><option value='214'>unamed</option><option value='87'>Walnuts</option><option value='153'>Water Filtered</option><option value='29'>Watermelon</option><option value='174'>Wheatgrass</option><option value='146'>Yams</option>					</select>
+					<input type="button" id="add_ingredient" class="button" value="Add Ingredient" onclick="Add_Ingredient(146)">
+					
+		        </div>
+		    </div>
+ 			<div class="row row-centered">
+		        <div class="col-sm-3 indent10" >
+		          Ingredients Added
+		        </div>
+		        <div id="ingredients_list" class="col-sm-9">
+		        	<div style="padding:5px;" id="ingredient979">200 grams of <a href="/food.php?f=15">Apples Juicing Organic</a> <button class="button danger icon remove"  onclick="Delete_Ingredient(979); return false;">Remove item</button></div><div style="padding:5px;" id="ingredient980">200 grams of <a href="/food.php?f=27">Pears</a> <button class="button danger icon remove"  onclick="Delete_Ingredient(980); return false;">Remove item</button></div><div style="padding:5px;" id="ingredient981">70 grams of <a href="/food.php?f=20">Carrots</a> <button class="button danger icon remove"  onclick="Delete_Ingredient(981); return false;">Remove item</button></div><div style="padding:5px;" id="ingredient978">50 grams of <a href="/food.php?f=26">Lemons</a> <button class="button danger icon remove"  onclick="Delete_Ingredient(978); return false;">Remove item</button></div>		        </div>
+		    </div>
+		  
+ 			<div class="row row-centered">
+	        <div class="col-sm-3 indent10" >
+	          Recipe Type
+	        </div>
+	        <div class="col-sm-9">
+					<select name="type"><option value="0">Select Type</option>
+					<option value='9'>Breakfast</option><option value='13'>Children</option><option value='7'>Desert</option><option value='11'>Extra</option><option value='12'>Hot Drink</option><option value='4' selected>Juice</option><option value='1'>Meal</option><option value='5'>Salad</option><option value='3'>Smoothie</option><option value='6'>Soup</option><option value='10'>Starter</option><option value='8'>Tea</option><option value='2'>Water</option>					</select>    
+	          for no of people
+					<input type="text" name="servings" id="servings" value="1" size="2">    
+	        </div>
+	    </div>
+			<div class="row row-centered">
+	        <div class="col-sm-3 indent10" >
+	         	Add serving sizes
+	        </div>
+	        <div class="col-sm-9">
+						<select name="portion_size" id="portion_size"><option value="0">Select</option>
+						<option value='1'>Small Glass></option><option value='2'>Medium Glass></option><option value='3'>Large Glass></option><option value='4' selected>Regular Portion></option><option value='5'>1 KG></option><option value='6'>1/2 KG></option><option value='7'>Half Portion></option><option value='8'>T/A Small></option><option value='9'>T/A  Large></option><option value='10'>Bowl></option>						</select>
+						is <input type="text" size="2" maxsize="5" id="contribuition_amount" name="contribuition_amount" value="5.00">
+						<input type="button" id="contribution" class="button" value="Add Contribution" onclick="add_contribution(146)">  
+					</div>
+				</div>
+				<div>
+				<div class="row row-centered">
+	        <div class="col-sm-3 indent10" >
+	          Serving sizes
+	        </div>
+	        <div id="contribution_list" class="col-sm-9">
+		        	<div  style="padding:5px;" id="portion_size176">Small Glass $6 <button class="button danger icon remove"  onclick="Delete_Contribution(176); return false;">Remove</button></div><div  style="padding:5px;" id="portion_size175">Large Glass $9 <button class="button danger icon remove"  onclick="Delete_Contribution(175); return false;">Remove</button></div>	        </div>
+	    </div>
+ 			<div class="row row-centered">
+		        <div class="col-sm-12">
+							<textarea id="makeit" name="makeit"  placeholder="Descibe how this recipe should be prepared"></textarea>
+		        </div>
+		    </div>
+					<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'makeit');
+            </script>
+ 		    <div class="row " style="">
+ 		    	<div class="col-sm-4"></div>
+		    	<div class="col-sm-8">
+		    				    		<input type="checkbox" name="show_on_web" id="show_on_web" Checked> <label for="show_on_web">show on website.</label></br>
+		    				    				      </div>
+		    </div>			
+		    <div class="row row-centered" style="text-align:center">
+				<div class="col-sm-5">
+		      	</div>
+		    	<div class="col-sm-4 text-left">
+		           <button  class="button" onclick="Save_Form(); return false;">Save Changes</button>
+		      	</div>
+		    	<div class="col-sm-3 text-left">
+		    					          	<button  class="button danger icon remove" onclick="Delete_Record('recipe','8e4f40ac','/recipes.php'); return false;">Delete Record</button>
+		           		           
+		      </div>
+		    </div>
+			<div id="popup" style="left: 701.5px; position: absolute; top: 106px; z-index: 9999; opacity: 1; display: none; background:#fff;">
+		        <span class="button b-close"><span>X</span></span>
+						<div id="uploader">
+							<p>Your browser does not have Flash, Silverlight or HTML5 support.</p>
+						</div>
+		    </div> 
+			</form>
+		</div>
+
