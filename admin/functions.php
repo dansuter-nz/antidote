@@ -1,4 +1,10 @@
 <?php
+
+
+$path="/var/www/html/antidote_apache";
+$path .= "/vendor/autoload.php";
+include_once($path);
+
 function InStr($haystack, $needle, $offset = 0)
 {
     $position = strpos($haystack, $needle, $offset);
@@ -14,10 +20,6 @@ if (!$_SERVER["HTTP_HOST"]=="localhost")
   }
 }
 if(!isset($_SESSION)) { session_start();}
-
-$path="/var/www/html/antidote_apache";
-$path .= "/vendor/autoload.php";
-include_once($path);
 
 
 function getNutrients($iDays,$idPerson) {
@@ -114,12 +116,12 @@ while($row = $result->fetch_assoc())
   //show_on_web=rsTemp("show_on_web")
   $s=$s."<tr>";
   $s=$s.'<td colspan="3">';
-  $s=$s.'<h3 style=""><a href="http://www.antidote.org.nz/recipe.php?r='.$id_recipe.'">'.$name."</a></h3>";
+  $s=$s.'<h3 style=""><a href="/recipe.php?r='.$id_recipe.'">'.$name."</a></h3>";
   $s=$s."</td>";
   $s=$s."</tr>";
   $s=$s."<tr>";
   $s=$s."<td>";
-  $s=$s.'<a href="http://www.antidote.org.nz/recipe.php?r='.$id_recipe.'"><img src="http://www.antidote.org.nz'.$row["recipe_image"].'" alt="'.$row["recipe_name"].'"></a>';
+  $s=$s.'<a href="/recipe.php?r='.$id_recipe.'"><img src="http://www.antidote.org.nz'.$row["recipe_image"].'" alt="'.$row["recipe_name"].'"></a>';
   $s=$s."</td>";
   $s=$s."<td>";        
   $s=$s.'<div id="ingredients_list" class="col-xs-12">';
@@ -135,7 +137,7 @@ while($row = $result->fetch_assoc())
     while($row2 = $result2->fetch_assoc())
     {
       $icount=$icount+1;
-      $s=$s.'<li style="white-space:nowrap">'.$row2["qty_grams"].' grams of <a href="http://www.antidote.org.nz/food.php?f='.$row2["id_food"].'">'.$row2["name"]."</a></li>";
+      $s=$s.'<li style="white-space:nowrap">'.$row2["qty_grams"].' grams of <a href="/food.php?f='.$row2["id_food"].'">'.$row2["name"]."</a></li>";
       if ($icount==6) {break;}
     }
     $conn2 -> close();
@@ -155,7 +157,7 @@ while($row = $result->fetch_assoc())
   {
     $width=cint($row2["RDI"]);
     if ($width>100) {$width=100;}
-    $s=$s.'<tr><td align="right" style=" height: 17px;"><a href="http://www.antidote.org.nz/vitamin.php?v='.$row2["id_vitamin"].'">'.$row2["name"].'</a></td><td style="width:100%"><a title="'.$row2["RDI"].'% of your Recommended Daily Intake" href="/vitamin.php?v='.$row2["id_vitamin"].'"><div class="border: 1px solid #000;"  style="width:'.$width."%;background-color:".$row2["color"].'">&nbsp;</div></a></td></tr>';
+    $s=$s.'<tr><td align="right" style=" height: 17px;"><a href="/vitamin.php?v='.$row2["id_vitamin"].'">'.$row2["name"].'</a></td><td style="width:100%"><a title="'.$row2["RDI"].'% of your Recommended Daily Intake" href="/vitamin.php?v='.$row2["id_vitamin"].'"><div class="border: 1px solid #000;"  style="width:'.$width."%;background-color:".$row2["color"].'">&nbsp;</div></a></td></tr>';
   }
   $conn2 -> close();
   $s=$s."</table>";
@@ -284,7 +286,7 @@ $message=$message."Daniel Suter dan@antidote.org.nz\r\n";
 $message=$message.$name."\r\n";
 $message=$message."Email: ".$_SESSION["site_email"]."\r\n";
 $message=$message."Phone:+".$_SESSION["phone"];
-sendEmail($sub,$message,$email,'dan@antidote.org.nz');
+sendEmail($sub,$message,$email,$_SESSION["site_email"]);
  }
 
 function replace($seacrh,$find,$replace){
@@ -673,14 +675,10 @@ function cint($numstring)
 function sendEmail($subject,$message,$to,$from)
  {
 
-$transport = (new Swift_SmtpTransport('smtp.zoho.com', 587, 'tls'))
+$transport = (new Swift_SmtpTransport($smtpserver, $smtpport, $smtpsecurity))
 //$transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
-->setUsername('dan@antidote.org.nz')
-->setPassword('1hdQrdLkgkap');
-//       ->setUsername('hello@alchemyacademybali.com')
-//       ->setPassword('M@r1p0sa');
-//     ->setUsername('dan@antidote.org.nz')
-//       ->setPassword('Lovelifenow');
+->setUsername($smtpuser)
+->setPassword($smtppass);
 
 $mailer = new Swift_Mailer($transport);
 // Create a message
@@ -707,10 +705,10 @@ function test_input($data) {
 }
 
 function open_conn(){
-$servername = "localhost";
-$username = "antidote_web";
-$password = "Freeyourmind32!";
-$dbname = "antidote";
+$servername = $dbservername;
+$username = $bdusername;
+$password = $dbpassword;
+$dbname = $bdname;
 
 $connection = new mysqli($servername, $username, $password, $dbname);
 // Check connection
