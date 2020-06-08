@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>
-    My Name 
-  </title>
-</head>
-
-<body>
-  <h1>Get My Name from Facebook</h1>
 
 <?php
 //require_once __DIR__ . '/vendor/autoload.php';
@@ -17,8 +7,8 @@ include "$_SERVER[DOCUMENT_ROOT]/files/ImageResize.php";
 session_start();
 
 $fb = new Facebook\Facebook([
-  'app_id' => '1575727666027370', // Replace {app-id} with your app id
-  'app_secret' => '439fd18b7706fb32ae392195827f11af',
+  'app_id' => FB_CLIENT_ID, // Replace {app-id} with your app id
+  'app_secret' => FB_CLIENT_SECRET,
   'default_graph_version' => 'v6.0',
   ]);
 
@@ -195,5 +185,3 @@ exit;
 //header('Location: https://example.com/members.php');
 ?>
 
-</body>
-</html>

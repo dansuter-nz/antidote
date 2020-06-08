@@ -1,6 +1,7 @@
 <?php 
 include 'header.php';  
 require_once('google/settings.php');
+require_once('fb/settings.php');
 ?> 
 <form action="/login_secure.php?<?=$_SERVER['QUERY_STRING']?>" method="post" name="frmLogin" id="frmLogin">
 <?php
@@ -32,15 +33,15 @@ echo '<div class="myInfoWarning"><div class="errorIcon">&nbsp;</div>Error Loggin
 <?php
 
 $fb = new Facebook\Facebook([
-  'app_id' => '1575727666027370', // Replace {app-id} with your app id
-  'app_secret' => '439fd18b7706fb32ae392195827f11af',
-  'default_graph_version' => 'v3.2',
+  'app_id' => FB_CLIENT_ID, // Replace {app-id} with your app id
+  'app_secret' => FB_CLIENT_SECRET,
+  'default_graph_version' => 'v6.0',
   ]);
 
 $helper = $fb->getRedirectLoginHelper();
 
 $permissions = ['email']; // Optional permissions
-$loginUrl = $helper->getLoginUrl('https://www.antidote.org.nz/fb/fb-callback.php', $permissions);
+$loginUrl = $helper->getLoginUrl(FB_CLIENT_REDIRECT_URL, $permissions);
 
 echo '<a href="' . htmlspecialchars($loginUrl) . '" style="color:#fff;">Log in with Facebook</a>';
 
