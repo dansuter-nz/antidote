@@ -7,7 +7,7 @@ $url =strtolower($url);
 
 
 $conn=open_conn();
-$sSQL="SELECT `fb_app_client_id`,`google_secret` FROM antidote.restaurant where url='".$url."';";
+$sSQL="SELECT `fb_app_client_id`,`fb_app_secrect` FROM antidote.restaurant where url='".$url."';";
 
 $result = $conn->query($sSQL) or die($conn->error);
 $row = $result->fetch_row();

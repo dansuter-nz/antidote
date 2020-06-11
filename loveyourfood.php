@@ -215,8 +215,8 @@ echo GetCurrentMeal($_SESSION["id_people"]);
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: -43.506794,
-            lng: 172.728603,
+            lat: <?=$_SESSION["lat"]?>,
+            lng: <?=$_SESSION["lng"]?>,
             mapTypeControl: true,
 	          mapTypeControlOptions: {
 	          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,

@@ -1,0 +1,4 @@
+
+Header set X-Content-Type-Options nosniff
+Header always append X-Frame-Options SAMEORIGIN
+Header set Content-Secure-Policy "default-src 'self';"

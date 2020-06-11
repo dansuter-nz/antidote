@@ -4,8 +4,7 @@
 if(!isset($_SESSION)) { session_start();} 
 define('root_dir',$_SERVER["DOCUMENT_ROOT"]);
 require(root_dir.'/admin/functions.php');
-\Stripe\Stripe::setApiKey('sk_test_dZ2b6tUngIfsGBEfBtW3mdoB00ChXPEQh0');
-
+\Stripe\Stripe::setApiKey($_SESSION["stripe_api_key"]);
 $customer = \Stripe\Customer::create();
 //add customer id from stripe to the people_saved_cards table
 $conn=open_conn();

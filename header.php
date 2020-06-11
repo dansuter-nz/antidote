@@ -2,55 +2,7 @@
 define('root_dir',"/var/www/html/antidote_apache");
 require(root_dir.'/admin/functions.php');
 if(!isset($_SESSION)) { session_start();} 
-if(isset($_SERVER['SCRIPT_NAME'])) {$sScriptName=strtoupper(substr($_SERVER['SCRIPT_NAME'],1));}
-//ok get the restaurant id using url and then get server_var and put them into session_var
-$url='';
-$url=$_SERVER['SERVER_NAME'];
-$subdomains = array("www.", "dev.");
-$url = str_replace($subdomains, "", $url);
-//if (!$_SESSION["url"]==$url)
-//{
-if (!isset($_SESSION["id_restaurant"]))
-  {
-  $sSQL="call get_website_details ('".$url."')";
-  //echo $sSQL;
-  $conn=open_conn();
-  $result = $conn->query($sSQL) or die($conn->error);
-    while($row = $result->fetch_assoc())  
-      {
-      $_SESSION["id_restaurant"]=$row["id_restaurant"];
-      $_SESSION["restaurant_name"]=$row["name"];
-      $_SESSION["url"]=$row["url"];
-      $_SESSION["country_code"]=$row["country_code"];
-      $_SESSION["phone"]=$row["phone"];
-      $_SESSION["address_1"]=$row["address_1"];
-      $_SESSION["address_2"]=$row["address_2"];
-      $_SESSION["city"]=$row["city"];
-      $_SESSION["added"]=$row["added"];
-      $_SESSION["updated"]=$row["updated"];
-      $_SESSION["show_food_grams"]=$row["show_food_grams"];
-      $_SESSION["lat"]=$row["lat"];
-      $_SESSION["lng"]=$row["lng"];
-      $_SESSION["accept_cash"]=$row["accept_cash"];
-      $_SESSION["accept_credit_cards"]=$row["accept_credit_cards"];
-      $_SESSION["accept_karma"]=$row["accept_karma"];
-      $_SESSION["post_code"]=$row["post_code"];
-      $_SESSION["currency"]=$row["currency"];
-      $_SESSION["allow_delivery"]=$row["allow_delivery"];
-      $_SESSION["delivery_max_distance"]=$row["delivery_max_distance"];
-      $_SESSION["delivery_charge_per_km"]=$row["delivery_charge_per_km"];
-      $_SESSION["delivery_charge_surcharge"]=$row["delivery_charge_surcharge"];
-      $_SESSION["logo"]=$row["logo"];
-      $_SESSION["site_email"]=$row["email"];
-      }
-  }
-//}
-$urlDev='';
-$bdev=false;
-$urlDev=$_SERVER['HTTP_HOST'];
-$urlDev=substr(strtoupper($urlDev),0,4);
-if ($urlDev=='DEV.')
-    {$bdev=true;}
+ 
 $login="";
 if (isset($_SESSION['email'])) 
   {

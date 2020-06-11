@@ -120,4 +120,7 @@ function Add_favourite(idR)
 
 }
 </script>
-<?php include 'footer.htm';?>
+<?
+php define('root_dir',"/var/www/html/antidote");
+require(root_dir.'/var/www/html/antidote/footer.php');
+?>

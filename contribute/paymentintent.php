@@ -4,7 +4,7 @@ require(root_dir.'/admin/functions.php');
 if(!isset($_SESSION)) { session_start();} 
 if(isset($_SERVER['SCRIPT_NAME'])) {$sScriptName=strtoupper(substr($_SERVER['SCRIPT_NAME'],1));}
 
-\Stripe\Stripe::setApiKey('sk_test_dZ2b6tUngIfsGBEfBtW3mdoB00ChXPEQh0');
+\Stripe\Stripe::setApiKey($_SESSION["stripe_api_key"]);
 
 \Stripe\PaymentIntent::create([
   'amount' => number_format($_SESSION["total_price"],2)*100,

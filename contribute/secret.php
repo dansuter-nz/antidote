@@ -1,7 +1,7 @@
 <?php
 define('root_dir',$_SERVER["DOCUMENT_ROOT"]);
 require(root_dir.'/admin/functions.php');
-\Stripe\Stripe::setApiKey('sk_test_dZ2b6tUngIfsGBEfBtW3mdoB00ChXPEQh0');
+\Stripe\Stripe::setApiKey($_SESSION["stripe_api_key"]);
 $intent = \Stripe\PaymentIntent::create([
   'amount' => number_format($_SESSION["total_price"],2)*100,
   'currency' => 'nzd',
