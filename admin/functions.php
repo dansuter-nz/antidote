@@ -1,6 +1,6 @@
 <?php
 
-
+include_once("/var/www/html/antidote/admin/settings.php");
 include_once("/var/www/html/antidote/vendor/autoload.php");
 
 if(isset($_SERVER['SCRIPT_NAME'])) {$sScriptName=strtoupper(substr($_SERVER['SCRIPT_NAME'],1));}
@@ -44,11 +44,11 @@ $result = $conn->query($sSQL) or die($conn->error);
     $_SESSION["logo"]=$row["logo"];
     $_SESSION["site_email"]=$row["email"];
     $_SESSION["stripe_api_key"]=$row["stripe_api_key"];
-    $smtpserver=$row["smtp_server"];
-    $smtpport=$row["smtp_port"];
-    $smtpsecurity["smtp_security"]=$row["stripe_api_key"];
-    $smtpuser=$row["smtp_user"];
-    $smtppass=$row["smtp_pass"];
+    $_SESSION["smtpserver"]=$row["smtp_server"];
+    $_SESSION["smtpport"]=$row["smtp_port"];
+    $_SESSION["smtpsecurity"]=$row["smtp_security"];
+    $_SESSION["smtpuser"]=$row["smtp_user"];
+    $_SESSION["smtppass"]=$row["smtp_pass"];
     //settings database connection
     }
 //}
@@ -761,10 +761,10 @@ function test_input($data) {
 }
 
 function open_conn(){
-$servername = $dbservername;
-$username = $bdusername;
-$password = $dbpassword;
-$dbname = $bdname;
+$servername = $_SESSION["dbservername"];
+$username = $_SESSION["dbusername"];
+$password = $_SESSION["dbpassword"];
+$dbname = $_SESSION["dbname"];
 
 $connection = new mysqli($servername, $username, $password, $dbname);
 // Check connection
