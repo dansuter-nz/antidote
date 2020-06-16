@@ -1,8 +1,8 @@
 <?php
-define('root_dir',"/var/www/html/antidote_apache");
+define('root_dir',"/var/www/html/antidote");
 require(root_dir.'/admin/functions.php');
-if(!isset($_SESSION)) { session_start();} 
- 
+
+//var_dump($_SESSION);
 $login="";
 if (isset($_SESSION['email'])) 
   {
@@ -394,7 +394,6 @@ $sSQl="";
 <?php if ($sScriptName=="LOVEYOURFOOD.PHP")
 {echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'; }
 ?>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <script src="/files/js/main.js"></script>
 
@@ -452,10 +451,10 @@ $sSQl="";
        echo $login;
        ?>
       <li class="nav-item">
-       <a class="nav-link" href="https://www.instagram.com/alchemyacademybali"><img style="text-align: left" alt="instragram" src="/images/insta-icox24.png"></a>
+       <a class="nav-link" href="https://www.facebook.com/brightons.antidote"><img style="text-align: left" alt="instragram" src="/images/insta-icox24.png"></a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" href="https://www.facebook.com/alchemyacademy"><img style="text-align: left" alt="fb" src="/images/facebook-icox24.png"></a>
+         <a class="nav-link" href="https://www.instagram.com/suterdaniel/"><img style="text-align: left" alt="fb" src="/images/facebook-icox24.png"></a>
       </li>
 
     </ul>

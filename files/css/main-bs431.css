@@ -372,7 +372,7 @@ div.small-graph-line:hover{ cursor: pointer; cursor: hand;}
  }
 .light_blue_row
 {
-     background:#EfEfeF;
+     background:#dce2f5;
      font-weight:normal;
      text-align:left;
 }
@@ -397,7 +397,7 @@ div.small-graph-line:hover{ cursor: pointer; cursor: hand;}
 }
 .Image_recipes
 {
-    background-color:#EfEfeF;
+    background-color:#dce2f5;
     border-top-left-radius:     5px;
     border-top-right-radius:    5px;
 }

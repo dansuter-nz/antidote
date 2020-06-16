@@ -1,17 +1,20 @@
 <?php 
+
 include 'header.php';  
 require_once('google/settings.php');
 require_once('fb/settings.php');
 ?> 
 <form action="/login_secure.php?<?=$_SERVER['QUERY_STRING']?>" method="post" name="frmLogin" id="frmLogin">
 <?php
-if ($bError) {
+if (isset($bError)) {
 ?>
 <div class="myInfoWarning">
 <div class="errorIcon">&nbsp;</div>
 Error Logging in please try again.
 </div>
-<?php }?>
+<?php }
+
+?>
 
 
 
@@ -23,7 +26,8 @@ Error Logging in please try again.
   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
    <div class="col-sm-12" >
 <form action="/login.php" method="post" name="frmLogin" id="frmLogin">
-<?php 
+<?php
+$sLoginAttempt='';
 if ($sLoginAttempt=='fail')
 {
 echo '<div class="myInfoWarning"><div class="errorIcon">&nbsp;</div>Error Logging in please try again.</div>';}
@@ -84,7 +88,7 @@ if (isset($_GET["er"]))
   $shtm=$shtm.$sErr."</div>";
   echo $shtm;}
 }?>
-<?php include 'footer.htm';?>
+<?php include 'footer.php';?>
 
 
 

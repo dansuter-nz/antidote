@@ -1,10 +1,13 @@
 
 <?php
+
 //require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_ROOT',$_SERVER["DOCUMENT_ROOT"]);  
 require(PROJECT_ROOT.'/admin/functions.php');
+require(PROJECT_ROOT.'/fb/settings.php');
+
 include "$_SERVER[DOCUMENT_ROOT]/files/ImageResize.php";
-session_start();
+
 
 $fb = new Facebook\Facebook([
   'app_id' => FB_CLIENT_ID, // Replace {app-id} with your app id
@@ -14,6 +17,9 @@ $fb = new Facebook\Facebook([
 
 $helper = $fb->getRedirectLoginHelper();
 
+
+
+
 try {
   $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -22,6 +28,9 @@ try {
   exit;
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
   // When validation fails or other local issues
+ //error_reporting(E_ALL);
+  //ini_set("display_errors", 1);
+  //var_dump($_GET);
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
   exit;
 }
@@ -54,7 +63,7 @@ echo '<h3>Metadata</h3>';
 var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId('1575727666027370'); // Replace {app-id} with your app id
+$tokenMetadata->validateAppId(FB_CLIENT_ID); // Replace {app-id} with your app id
 // If you know the user ID this access token belongs to, you can validate it here
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
@@ -172,12 +181,12 @@ while($row = $result->fetch_assoc())
   $sql = "UPDATE people SET image_path = '/images/people/med/".$row["uid_people"].".jpg' WHERE id_people ='".$id_people."';";
   $conn->query($sql);
   echo "<br><br>".$sql;
-  echo "<br><br>Location: /login.php?a=".$autologin;
+  echo "<br><br>Location: /login_secure.php?a=".$autologin;
   //exit;
   //redirect to login page with autologin code
   }
 //$goto=substr($autologin,0,32);
-header("Location: /login.php?a=".$autologin); 
+header("Location: /login_secure.php?a=".$autologin); 
 exit;
 
 // User is logged in with a long-lived access token.

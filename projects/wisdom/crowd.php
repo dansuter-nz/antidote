@@ -3,9 +3,7 @@ session_start();
 
 $_SESSION["redirect_to"]=$_SERVER['HTTP_REFERER'];
 //check to see if logged in if not redirect
-$path="/var/www/html/antidote_apache";
-$path .= "/header.php";
-include_once($path);
+include_once("/var/www/html/antidote/header.php");
 $conn=open_conn();
 $conn2=open_conn();
 $stime=date("Y-m-d h:i:sa");
@@ -32,12 +30,11 @@ if ($_GET["ac"]!="") {
 	//x=rwb(sSQL)
 	$result = $conn->query($sSQL) or die($conn->error);
 }
+if (!isset($_SESSION["rows"])){$_SESSION["rows"]=20;}
 if (is_numeric($_GET["r"]) && ! $_GET["r"]=="") 
 {
-	$rows=$_GET["r"];
-} else {
-	$rows=20;
-}
+	$_SESSION["rows"]=$_GET["r"];
+} 
 if (!$_GET["a"]=="") {
 	if (is_numeric($_GET["a"])) {
 		$article=$_GET["a"];
@@ -45,7 +42,7 @@ if (!$_GET["a"]=="") {
 		$rwe["invalid article id"];
 	}
 	
-	$sSQL = "call adds.Get_results_by_ID (".$_GET["a"].",".$rows.")";
+	$sSQL = "call adds.Get_results_by_ID (".$_GET["a"].",".$_SESSION["rows"].")";
 	//echo $sSQL;
 	$result = $conn->query($sSQL) or die($conn->error); 
 	$sSql="";
@@ -100,14 +97,14 @@ if (!$_GET["a"]=="") {
 		 	else 
 		    	{ $strClass="white_row";}
 			$h=$h.'<tr class="'.$strClass.'"><td>'.$row["commentText"].'</td>';
-			$h=$h.'<td class="tdRight bold">'.$row["totalVotes"]."</td>";
+			$h=$h.'<td class="tdRight bold">'.$row["TotalVotes"]."</td>";
 			$h=$h.'<td class="tdRight bold green">'.$row["posVotes"]."</td>";
 			$h=$h.'<td class="tdRight bold red">'.$row["negVotes"]."</td>";
 			$h=$h.'<td class="bold"><a href="/projects/wisdom/crowd.php?n='.$row["name"].'">'.$row["name"]."</a></td></tr>";
 			$irow=$irow+1;
 		}
 		$h=$h."</table>";
-		$h=$h.'<br>Showing last <input style="text-align:right;font-weight:bold;" size="3" id="topC" value="'.$rows.'"><input type="hidden" id="article" value="'.$article.'"> answers. need more? <input type="button" id="upBtn" value="Update" onclick="updateRows();"><br>';
+		$h=$h.'<br>Showing last <input style="text-align:right;font-weight:bold;" size="3" id="topC" value="'.$_SESSION["rows"].'"><input type="hidden" id="article" value="'.$article.'"> answers. need more? <input type="button" id="upBtn" value="Update" onclick="updateRows();"><br>';
 		$result->close();
 		$sFoot="<script>CKEDITOR.replace('t');</script>";
 	}
@@ -241,13 +238,13 @@ else
 		<?php
  		$sSQL = "Select ID,streamID,streamTitle,status,streamURL,categoryID,createdate,date_add,date_updated,commentCount,threadCount,vote_count,has_comments ";
 		$sSQL=$sSQL." FROM adds.stuff_articles where length(streamTitle)>0 ";
-		if ($_GET["f"]!="") {
+		if ($_GET["f"]!="" && $_GET["f"]!="no_filter") {
 			$sSQL=$sSQL." and streamID like 'stuff/".$_GET["f"]."%'";
 		}
-		if ($_GET["f1"]!="") {
+		if ($_GET["f1"]!="" && $_GET["f"]!="no_filter") {
 			$sSQL=$sSQL." and streamID like 'stuff/".$_GET["f"]."/".$_GET["f1"]."%'";
 		}
-		if ($_GET["f2"]!="") {
+		if ($_GET["f2"]!="" && $_GET["f"]!="no_filter") {
 			$sSQL=$sSQL." and streamID like 'stuff/".$_GET["f"]."/".$_GET["f1"]."/".$_GET["f2"]."%'";
 		}
 		if ($_GET["s"]!="") {
@@ -273,7 +270,7 @@ else
 		} else {
 			$sSQL=$sSQL." DESC ";
 		}
-		$sSQL=$sSQL." limit ".$rows.";";
+		$sSQL=$sSQL." limit ".$_SESSION["rows"].";";
 		//rwe(sSQL)
 		//echo $sSQL;
 		//Select ID,streamID,streamTitle,status,streamURL,categoryID,createdate,date_add,date_updated,commentCount,threadCount,vote_count,has_comments FROM adds.stuff_articles where length(streamTitle)>0 and streamID like 'stuff/national%'order by commentCount DESC limit 20;
@@ -334,7 +331,7 @@ else
 	else 
 	{
 		$h="S";
-		$sSQL = "call adds.Get_results_by_name ('".$_GET["n"]."',".$rows.");";
+		$sSQL = "call adds.Get_results_by_name ('".$_GET["n"]."',".$_SESSION["rows"].");";
 		echo $sSQL;
 		$result = $conn->query($sSQL) or die($conn->error);
 		$irow=0;
@@ -395,7 +392,7 @@ else
 			
 		}
 	}
-	$h=$h.'<br>Showing last <input style="text-align:right;font-weight:bold;" size="3" id="topC" value="'.$rows.'"><input type="hidden" id="article" value="'.$article.'"> answers. need more? <input type="button" id="upBtn" value="Update" onclick="updateRows();"><br>';
+	$h=$h.'<br>Showing last <input style="text-align:right;font-weight:bold;" size="3" id="topC" value="'.$_SESSION["rows"].'"><input type="hidden" id="article" value="'.$article.'"> answers. need more? <input type="button" id="upBtn" value="Update" onclick="updateRows();"><br>';
 	
 }
 echo $h;
@@ -491,6 +488,7 @@ window.location.href =url;
 </script>
 <script src="/files/ckeditor/ckeditor.js"></script>
 <script>
+
 
 	
 CKEDITOR.replace("ac");

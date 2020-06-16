@@ -118,4 +118,4 @@ function Add_favourite(idR)
 
 }
 </script>
-<?php include 'footer.htm';?>
+<?php include 'footer.php';?>

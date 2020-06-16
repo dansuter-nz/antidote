@@ -1,21 +1,13 @@
 <?php 
 
 if(!isset($_SESSION)) { session_start();} 
-if (isset($_GET["redirect"])){if ($_GET["redirect"]!="") 
-    {
-        $_SESSION["redirect_to"]=$_GET["redirect"];}
-    }
+
 $bError=false;
 //print_r($_SESSION);
 
 $path = $_SERVER['DOCUMENT_ROOT'];
 $path .= '/admin/functions.php';
 include_once($path);
-
-require_once('google/settings.php');
-//require_once __DIR__ . '/vendor/autoload.php';  
-
-
 
 
 $conn2=open_conn(); 
@@ -25,6 +17,7 @@ if ($_GET["a"]!="") {
         //x=rwe("here")
     echo "CALL `People_login_by_Auto`('".$_GET["a"]."');";
     $sql= "CALL `People_login_by_Auto`('".$_GET["a"]."');";
+    
     $result = $conn2->query($sql) or die($conn2->error);       
     while($row = $result->fetch_assoc()) {
         $_SESSION["id_people"]=$row["id_people"];
@@ -44,8 +37,9 @@ if ($_GET["a"]!="") {
         $_SESSION["about_me"]=$row["about_me"];
         $_SESSION["can_authorize"]=$row["can_authorize"];
         //echo $_SESSION["redirect_to"];
-        if ($_SESSION["redirect_to"]!="") {
-            header("Location: ".$_SESSION["redirect_to"]);
+        if ($_SESSION["redirect_to"]!="" && strpos(SESSION["redirect_to"],"login.php")==-1) {
+            echo "Location: ".$_SESSION["redirect_to"];
+            //header("Location: ".$_SESSION["redirect_to"]);
             exit;
         } else {
             header("Location:/index.php");

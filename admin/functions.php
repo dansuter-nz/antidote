@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once("/var/www/html/antidote/admin/settings.php");
 include_once("/var/www/html/antidote/vendor/autoload.php");
 
@@ -13,8 +13,10 @@ $url = str_replace($subdomains, "", $url);
 //{
 //if (!isset($_SESSION["id_restaurant"]))
   //{
+if (!isset($_SESSION["id_restaurant"]))
+{
 $sSQL="call get_website_details ('".$url."')";
-echo $sSQL;
+//echo $sSQL;
 $conn=open_conn();
 $result = $conn->query($sSQL) or die($conn->error);
   while($row = $result->fetch_assoc())  
@@ -48,10 +50,10 @@ $result = $conn->query($sSQL) or die($conn->error);
     $_SESSION["smtpport"]=$row["smtp_port"];
     $_SESSION["smtpsecurity"]=$row["smtp_security"];
     $_SESSION["smtpuser"]=$row["smtp_user"];
-    $_SESSION["smtppass"]=$row["smtp_pass"];
+    $_SESSION["smtppass"]=$row["smtp_password"];
     //settings database connection
     }
-//}
+}
 //}
 
 
